@@ -36,7 +36,7 @@ Users should be able to:
 
 ### Links
 
-- Solution URL: [Solution URL](https://www.frontendmentor.io/solutions/mobile-first-site-using-grid-and-flexbox-4n8jUaVoA)
+- Solution URL: [Solution URL](https://www.frontendmentor.io/solutions/mobile-first-site-using-flexbox-NUaFqnJV2)
 - Live Site URL: [Live site URL](https://joco9308.github.io/fm-intro-component-with-sign-up-form/)
 
 ## My process
