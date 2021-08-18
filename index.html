@@ -8,29 +8,51 @@
   
   <title>Frontend Mentor | Intro component with sign up form</title>
 
-  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
-  <style>
-    .attribution { font-size: 11px; text-align: center; }
-    .attribution a { color: hsl(228, 45%, 44%); }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
-  Learn to code by watching others
-
-  See how experienced developers solve problems in real-time. Watching scripted tutorials is great, 
-  but understanding how developers think is invaluable. 
-
-  Try it free 7 days then $20/mo. thereafter
-
-  First Name 
-  Last Name 
-  Email Address
-  Password
-
-  Claim your free trial 
-
-  By clicking the button, you are agreeing to our Terms and Services
+  <main>
+    <header>
+      <h1>Learn to code by watching others</h1>
+      <p>See how experienced developers solve problems in real-time. Watching scripted tutorials is great, 
+        but understanding how developers think is invaluable.</p>  
+    </header>
+    
+    <section class="registration">
+      <div class="offer"><b>Try it free 7 days</b> then $20/mo. thereafter</div>
+    
+      <form id="registration-form">
+        <div class="form-group">
+          <div class="input-wrapper">
+            <input type="text" placeholder="First Name" name="first-name">
+          </div>
+          <div class="error"></div>
+        </div>
+        <div class="form-group">
+          <div class="input-wrapper">
+            <input type="text" placeholder="Last Name" name="last-name">
+          </div>
+          <div class="error"></div>
+        </div>
+        <div class="form-group">
+          <div class="input-wrapper">
+            <input type="email" placeholder="Email Address" name="email">
+          </div>
+          <div class="error"></div>
+        </div>
+        <div class="form-group">
+          <div class="input-wrapper">
+            <input type="password" placeholder="Password" name="password">
+          </div>
+          <div class="error"></div>
+        </div>
+        <button>Claim your free trial </button>
+        <p>
+          By clicking the button, you are agreeing to our <b class="danger">Terms and Services</b>
+        </p>
+      </form>
+    </section>
+  </main>
   
   <footer>
     <p class="attribution">
@@ -38,5 +60,81 @@
       Coded by <a href="#">Your Name Here</a>.
     </p>
   </footer>
+
+  <script>
+    const form = document.getElementById('registration-form');
+    form.noValidate = true;
+
+    for (element of form.elements) {
+      if (element.nodeName == 'INPUT') {
+        element.addEventListener('keydown', e => {
+          removeError(e.target);
+        })
+      }
+    }
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      e.stopPropagation();
+      validateRegistrationForm();
+    })
+
+    function validateRegistrationForm() {
+      valdiateField(form['first-name'], [
+        { validate: isNotBlank, errorMessage: 'First Name cannot be empty' }
+      ])
+      valdiateField(form['last-name'], [
+        { validate: isNotBlank, errorMessage: 'Last Name cannot be empty' }
+      ])
+      valdiateField(form['email'], [
+        { validate: isNotBlank, errorMessage: 'Email cannot be empty' },
+        { validate: isValidEmail, errorMessage: 'Looks like this is not an email' }
+      ])
+      valdiateField(form['password'], [
+        { validate: isNotBlank, errorMessage: 'Password cannot be empty' }
+      ])
+    }
+
+    function valdiateField(field, validators) {
+      let hasPreviousError = false;
+      validators.forEach(validator => {
+        if (!hasPreviousError) {
+          if (!validator.validate(field.value)) {
+            addError(field, validator.errorMessage);
+            hasPreviousError = true;
+          } else {
+            removeError(field);
+          }                  
+        }
+      });
+    }
+
+    function addError(input, error) {
+      const formGroup = input.parentNode.parentNode;
+      formGroup.classList.add('has-error')
+      formGroup.querySelector('.error').textContent = error;
+      console.log(error)
+    }
+    
+    function removeError(input) {
+      const formGroup = input.parentNode.parentNode;
+      formGroup.classList.remove('has-error')
+      formGroup.querySelector('.error').textContent = '';
+    }
+
+    function isValidEmail(email) {
+      const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      return re.test(String(email).toLowerCase());
+    }
+
+    function isNotBlank(str) {
+      return !isBlank(str);
+    }
+
+    function isBlank(str) {
+      return !str || str.trim().length < 1;
+    }
+
+  </script>
 </body>
 </html>
